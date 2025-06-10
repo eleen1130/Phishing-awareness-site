@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Phishing Awareness</title>
+  <style>
+    /* Reset & base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9fbfc;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 260px;
+      background-color: #1f2937;
+      color: #fff;
+      padding: 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .sidebar h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar a {
+      color: #ddd;
+      text-decoration: none;
+      display: block;
+      margin: 8px 0;
+      transition: color 0.3s ease;
+    }
+    .sidebar a:hover {
+      color: #fff;
+    }
+    .main-content {
+      flex: 1;
+      padding: 0;
+    }
+
+    /* Banner header with overlay */
+    header.banner {
+      position: relative;
+      background: url('phishing2.webp') no-repeat center/cover;
+      color: #fff;
+      padding: 50px 20px 10px;
+      text-align: center;
+      overflow: hidden;
+    }
+    header.banner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      mix-blend-mode: multiply;
+      z-index: 0;
+      transition: background 0.3s ease;
+    }
+
+    header.banner .container {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      padding-bottom: 50px;
+    }
+    header.banner h1 {
+      font-size: 4rem;
+      margin-bottom: 0.1em;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    header.banner p {
+      font-size: 1.4rem;
+      font-weight: 300;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+      margin-top: 0px;
+    }
+
+    /* Main container */
+    main.container {
+      max-width: 960px;
+      margin: 40px auto 80px;
+      padding: 0 20px;
+    }
+
+    /* Section headers */
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      border-bottom: 3px solid #0070ff;
+      padding-bottom: 6px;
+      color: #0047bb;
+      font-weight: 700;
+    }
+
+    /* Cards container */
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    /* Card styles */
+    .card, .icon-card {
+      background: #ffffff;
+      box-shadow: 0 6px 12px rgb(0 0 0 / 0.1);
+      border-radius: 16px;
+      padding: 20px;
+      flex: 1 1 calc(50% - 20px);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      cursor: default;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .card:hover, .icon-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgb(0 0 0 / 0.15);
+    }
+    .icon-card {
+      flex: 1 1 calc(25% - 20px);
+    }
+
+    .icon-card i {
+      font-size: 3rem;
+      color: #0070ff;
+      margin-bottom: 12px;
+      transition: color 0.3s ease;
+    }
+    .icon-card:hover i {
+      color: #ff6f00;
+    }
+
+    /* Images inside cards and content */
+    .card img, section img {
+      max-width: 100%;
+      border-radius: 14px;
+      margin-top: 20px;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+      user-select: none;
+    }
+
+    /* Checklist lists */
+    .checklist {
+      list-style: none;
+      padding-left: 0;
+      margin: 20px 0;
+    }
+    .checklist li {
+      position: relative;
+      padding-left: 36px;
+      margin-bottom: 14px;
+      font-size: 1.1rem;
+      line-height: 1.4;
+    }
+    /* Emoji as bullet */
+    .checklist li::before {
+      content: attr(data-emoji);
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 1.5rem;
+      line-height: 1;
+      user-select: none;
+    }
+
+    /* Assign emojis dynamically in HTML */
+
+    /* Buttons */
+    button {
+      cursor: pointer;
+      background: #0070ff;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 600;
+      padding: 14px 30px;
+      border-radius: 30px;
+      box-shadow: 0 5px 15px rgba(0, 112, 255, 0.4);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #005fcc;
+      box-shadow: 0 8px 22px rgba(0, 95, 204, 0.6);
+    }
+    button:focus {
+      outline: 2px solid #0047bb;
+      outline-offset: 3px;
+    }
+
+    /* Tool-card links as buttons */
+    .tool-card {
+      background: white;
+      color: rgb(26, 26, 26);
+      font-weight: 600;
+      padding: 15px 10px;
+      border-radius: 20px;
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 0 5px 12px rgba(102, 153, 219, 0.4);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      flex: 1 1 calc(20% - 20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tool-card:hover {
+      background-color: #f5faff;
+      box-shadow: 0 7px 20px rgba(0, 95, 204, 0.6);
+    }
+
+    /* Footer */
+    footer {
+      background: #e7eaf3;
+      color: #444;
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-top: 1px solid #d4d9e6;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .cards {
+        flex-direction: column;
+      }
+      .icon-card, .card, .tool-card {
+        flex: 1 1 100%;
+      }
+    }
+    @media (max-width: 600px) {
+      header.banner h1 {
+        font-size: 2.4rem;
+      }
+      section h2 {
+        font-size: 1.6rem;
+      }
+    }
+
+    /* Modal Styles for Quiz */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 14px;
+      max-width: 450px;
+      width: 100%;
+      padding: 30px 25px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      text-align: center;
+      position: relative;
+    }
+    .modal-content h3 {
+      margin-bottom: 15px;
+      color: #0070ff;
+      font-weight: 700;
+    }
+    .modal-content p {
+      margin-bottom: 25px;
+      font-size: 1.1rem;
+    }
+    .modal-content button.close-btn {
+      background: #ff5c5c;
+      margin-top: 10px;
+      padding: 10px 25px;
+      border-radius: 30px;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(255, 92, 92, 0.5);
+      transition: background-color 0.3s ease;
+    }
+    .modal-content button.close-btn:hover {
+      background: #e84444;
+    }
+
+    .pagination-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1em;
+    margin: 2em 0;
+    padding-right: 30px;
+  }
+
+  .nav-btn {
+    background-color: #007BFF;
+    color: white;
+    padding: 0.75em 1.5em;
+    border: none;
+    border-radius: 0.5em;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+
+  .nav-btn:hover {
+    background-color: #0056b3;
+  }
+  </style>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <header class="banner">
+    <div class="container">
+      <h1>Phishing Awareness</h1>
+      <p>Protect yourself and your organization from online scams</p>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+        <h2>Quick Navigation</h2>
+        <ul>
+        <li><a href="#what-is-phishing">What is Phishing?</a></li>
+        <li><a href="#types-of-attacks">Types of Attacks</a></li>
+        <li><a href="#real-incidents">Real Incidents</a></li>
+        <li><a href="#spotting">How to Spot</a></li>
+        <li><a href="#anatomy">Email Anatomy</a></li>
+        <li><a href="#best-practices">Best Practices</a></li>
+        <li><a href="#comparison">Email Comparison</a></li>
+        <li><a href="#protection">Protect Yourself</a></li>
+        <li><a href="#response">Incident Response</a></li>
+        <li><a href="#tools">Link Check Tools</a></li>
+        <li><a href="#quiz">Quiz</a></li>
+        </ul>
+    </aside>
+
+    <main class="container">
+        <section id="what-is-phishing">
+        <h2>What is Phishing?</h2>
+        <p>Phishing is a type of cyber attack where attackers disguise themselves as trusted individuals or organizations to steal your sensitive information. This can include login credentials, credit card numbers, or even tricking you into downloading malicious software that harms your device or network.</p>
+        <div class="cards">
+            <div class="card icon-card">
+            <i class="fas fa-envelope"></i>
+            <h3>Email</h3>
+            <p>Attackers send fraudulent emails pretending to be from banks, online services, or colleagues. These emails often urge you to click on a link or download an attachment, leading to fake websites or malware infections. They may use urgent language to pressure you into quick action without thinking.</p>
+            </div>
+            <div class="card icon-card">
+            <i class="fas fa-sms"></i>
+            <h3>SMS / WhatsApp (Smishing)</h3>
+            <p>This involves malicious text messages or chat app messages that contain deceptive links or requests. They might claim you won a prize or need to verify your account, tricking you into revealing personal data or installing harmful apps on your phone.</p>
+            </div>
+            <div class="card icon-card">
+            <i class="fas fa-phone"></i>
+            <h3>Vishing (Voice Phishing)</h3>
+            <p>Attackers make phone calls impersonating trusted entities like your bank or company IT department. They try to persuade you to disclose passwords, PINs, or other private info. Often they create a sense of urgency or fear to get you to comply quickly.</p>
+            </div>
+            <div class="card icon-card">
+            <i class="fas fa-globe"></i>
+            <h3>Fake Websites</h3>
+            <p>These are fraudulent websites that look almost identical to legitimate ones. When you enter your login details or payment information, attackers capture it. Sometimes attackers redirect you from real sites to fake ones without your knowledge.</p>
+            </div>
+        </div>
+        </section>
+
+        <section>
+        <h2>Why Are You a Target?</h2>
+        <p>Attackers often target employees, students, and the general public because:</p>
+        <ul class="checklist">
+            <li data-emoji="💼">You have access to sensitive company or client information</li>
+            <li data-emoji="💰">You may manage payments, invoices, or financial systems</li>
+            <li data-emoji="🔐">You might reuse passwords across services</li>
+            <li data-emoji="📧">Your email can be spoofed to attack others</li>
+        </ul>
+        </section>
+
+        <section id="types-of-attacks">
+        <h2>Types of Phishing Attacks</h2>
+        <div class="cards">
+            <div class="card">
+            <h3>Spear Phishing</h3>
+            <p>
+                Spear phishing is a highly targeted form of phishing where the attacker crafts emails tailored to a specific individual, department, or role within an organization. Unlike mass phishing, these messages often include personal details (like your name, job title, or company projects) to appear more legitimate. For example, an attacker might pose as your manager requesting a document urgently. Because it feels personal and relevant, it’s much easier to fall for. Always verify unusual requests through a second communication channel (e.g., phone or in-person).
+            </p>
+            </div>
+            <div class="card">
+            <h3>Business Email Compromise</h3>
+            <p>
+                This attack involves hijacking or spoofing a legitimate business email—typically from a high-ranking executive like the CEO or CFO—to trick employees into taking urgent actions, such as transferring money or revealing sensitive data. The email may appear very authentic and time-sensitive, creating pressure to act quickly without proper verification. Implement multi-person approval processes for financial transactions and train employees to double-check urgent directives from upper management.
+            </p>
+            </div>
+            <div class="card">
+            <h3>Malware Phishing</h3>
+            <p>
+                Malware phishing uses email attachments or links to deliver malicious software to your device. These emails may pretend to be invoices, delivery confirmations, or resumes. Clicking a link or downloading a file might install spyware, ransomware, or keyloggers that compromise your system. Be cautious with unexpected attachments or downloads, even if the sender seems familiar. Use antivirus tools and keep them updated.
+            </p>
+            </div>
+            <div class="card">
+            <h3>Link Manipulation</h3>
+            <p>
+                In this type, the attacker embeds deceptive links in emails or messages. These links may appear legitimate but redirect you to a fake site designed to harvest your login credentials. For example, a link may display as https://www.mybank.com but actually lead to https://mybank-login-secure.info. Always hover over links before clicking to check their true destination, and avoid entering sensitive information on unfamiliar or suspicious websites.
+            </p>
+            </div>
+        </div>
+        </section>
+
+        <section>
+        <h2>Latest Phishing Trends</h2>
+        <div class="cards">
+            <div class="card">
+            <h3>📱 Mobile Phishing</h3>
+            <p>
+                As more work shifts to mobile devices, attackers are targeting users through SMS (“smishing”) and messaging apps. These attacks often include shortened URLs and mimic real services like banks or delivery companies. Be cautious when clicking links on your phone.
+            </p>
+            </div>
+            <div class="card">
+            <h3>🧠 AI-Generated Phishing</h3>
+            <p>
+                Attackers are now using AI tools to create more convincing phishing emails that mimic tone, grammar, and even personal style. These messages are harder to detect, so it’s more important than ever to verify messages and watch for inconsistencies.
+            </p>
+            </div>
+            <div class="card">
+            <h3>🎣 Clone Phishing</h3>
+            <p>
+                In clone phishing, attackers copy a legitimate email you’ve received in the past, then resend it with malicious links or attachments. Because it looks nearly identical to something familiar, it's easy to trust. Always verify repeated messages, especially if they involve links or attachments.
+            </p>
+            </div>
+            <div class="card">
+            <h3>🌐 Phishing via Cloud Platforms</h3>
+            <p>
+                Attackers are increasingly exploiting trusted platforms like Google Docs, Microsoft SharePoint, or Dropbox to host malicious files or gather credentials. Since users tend to trust these domains, they’re more likely to click. Always inspect URLs and sender legitimacy, even on known platforms.
+            </p>
+            </div>
+        </div>
+        </section>
+
+        <section id="real-incidents">
+        <h2>Real Phishing Incidents</h2>
+        <ul class="checklist">
+            <li data-emoji="🎯"><strong>Google & Facebook:</strong> Lost $100M to fake vendor scam.</li>
+            <li data-emoji="🎯"><strong>Sony Pictures:</strong> Hackers accessed exec emails before major data leak.</li>
+            <li data-emoji="🎯"><strong>Twitter 2020:</strong> High-profile account takeover via phishing.</li>
+        </ul>
+        </section>
+    </main>
+    </div>
+    <nav class="pagination-buttons">
+        <a href="phishing_page2.html" class="nav-btn">Next →</a>
+    </nav>
+
+  <footer>
+    &copy; 2025 Cyber Awareness Training. All rights reserved.
+  </footer>
+
+  <!-- Modal for Quiz -->
+  <div class="modal" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
+    <div class="modal-content">
+      <h3 id="quizTitle">Phishing Awareness Quiz</h3>
+      <p>Coming soon! Stay tuned for interactive quizzes to test your knowledge and boost your defense skills.</p>
+      <button class="close-btn" aria-label="Close Quiz Modal">Close</button>
+    </div>
+  </div>
+
+  <script>
+    const quizBtn = document.getElementById('quizBtn');
+    const quizModal = document.getElementById('quizModal');
+    const closeBtn = quizModal.querySelector('.close-btn');
+
+    quizBtn.addEventListener('click', () => {
+      quizModal.classList.add('active');
+    });
+
+    closeBtn.addEventListener('click', () => {
+      quizModal.classList.remove('active');
+    });
+
+    // Close modal on outside click
+    quizModal.addEventListener('click', e => {
+      if (e.target === quizModal) {
+        quizModal.classList.remove('active');
+      }
+    });
+
+    // Accessibility: close modal on ESC key
+    document.addEventListener('keydown', e => {
+      if (e.key === "Escape" && quizModal.classList.contains('active')) {
+        quizModal.classList.remove('active');
+      }
+    });
+  </script>
+
+</body>
+</html>

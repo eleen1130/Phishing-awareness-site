@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Phishing Awareness</title>
+  <style>
+    /* Reset & base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f9fbfc;
+      color: #1a1a1a;
+      line-height: 1.6;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 260px;
+      background-color: #1f2937;
+      color: #fff;
+      padding: 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+    }
+    .sidebar h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+    .sidebar a {
+      color: #ddd;
+      text-decoration: none;
+      display: block;
+      margin: 8px 0;
+      transition: color 0.3s ease;
+    }
+    .sidebar a:hover {
+      color: #fff;
+    }
+    .main-content {
+      flex: 1;
+      padding: 0;
+    }
+
+    /* Banner header with overlay */
+    header.banner {
+      position: relative;
+      background: url('phishing2.webp') no-repeat center/cover;
+      color: #fff;
+      padding: 50px 20px 10px;
+      text-align: center;
+      overflow: hidden;
+    }
+    header.banner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      mix-blend-mode: multiply;
+      z-index: 0;
+      transition: background 0.3s ease;
+    }
+
+    header.banner .container {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 0 auto;
+      text-align: center;
+      padding-bottom: 50px;
+    }
+    header.banner h1 {
+      font-size: 4rem;
+      margin-bottom: 0.1em;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    }
+    header.banner p {
+      font-size: 1.4rem;
+      font-weight: 300;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+      margin-top: 0px;
+    }
+
+    /* Main container */
+    main.container {
+      max-width: 960px;
+      margin: 40px auto 80px;
+      padding: 0 20px;
+    }
+
+    /* Section headers */
+    section h2 {
+      font-size: 2rem;
+      margin-bottom: 15px;
+      border-bottom: 3px solid #0070ff;
+      padding-bottom: 6px;
+      color: #0047bb;
+      font-weight: 700;
+    }
+
+    /* Cards container */
+    .cards {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    /* Card styles */
+    .card, .icon-card {
+      background: #ffffff;
+      box-shadow: 0 6px 12px rgb(0 0 0 / 0.1);
+      border-radius: 16px;
+      padding: 20px;
+      flex: 1 1 calc(50% - 20px);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      cursor: default;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .card:hover, .icon-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 24px rgb(0 0 0 / 0.15);
+    }
+    .icon-card {
+      flex: 1 1 calc(25% - 20px);
+    }
+
+    .icon-card i {
+      font-size: 3rem;
+      color: #0070ff;
+      margin-bottom: 12px;
+      transition: color 0.3s ease;
+    }
+    .icon-card:hover i {
+      color: #ff6f00;
+    }
+
+    /* Images inside cards and content */
+    .card img, section img {
+      max-width: 100%;
+      border-radius: 14px;
+      margin-top: 20px;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+      user-select: none;
+    }
+
+    /* Checklist lists */
+    .checklist {
+      list-style: none;
+      padding-left: 0;
+      margin: 20px 0;
+    }
+    .checklist li {
+      position: relative;
+      padding-left: 36px;
+      margin-bottom: 14px;
+      font-size: 1.1rem;
+      line-height: 1.4;
+    }
+    /* Emoji as bullet */
+    .checklist li::before {
+      content: attr(data-emoji);
+      position: absolute;
+      left: 0;
+      top: 0;
+      font-size: 1.5rem;
+      line-height: 1;
+      user-select: none;
+    }
+
+    /* Assign emojis dynamically in HTML */
+
+    /* Buttons */
+    button {
+      cursor: pointer;
+      background: #0070ff;
+      border: none;
+      color: white;
+      font-size: 1.2rem;
+      font-weight: 600;
+      padding: 14px 30px;
+      border-radius: 30px;
+      box-shadow: 0 5px 15px rgba(0, 112, 255, 0.4);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+      margin-top: 10px;
+    }
+    button:hover {
+      background: #005fcc;
+      box-shadow: 0 8px 22px rgba(0, 95, 204, 0.6);
+    }
+    button:focus {
+      outline: 2px solid #0047bb;
+      outline-offset: 3px;
+    }
+
+    /* Tool-card links as buttons */
+    .tool-card {
+      background: white;
+      color: rgb(26, 26, 26);
+      font-weight: 600;
+      padding: 15px 10px;
+      border-radius: 20px;
+      text-align: center;
+      text-decoration: none;
+      box-shadow: 0 5px 12px rgba(102, 153, 219, 0.4);
+      transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      flex: 1 1 calc(20% - 20px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .tool-card:hover {
+      background-color: #f5faff;
+      box-shadow: 0 7px 20px rgba(0, 95, 204, 0.6);
+    }
+
+    /* Footer */
+    footer {
+      background: #e7eaf3;
+      color: #444;
+      text-align: center;
+      padding: 30px 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      border-top: 1px solid #d4d9e6;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .cards {
+        flex-direction: column;
+      }
+      .icon-card, .card, .tool-card {
+        flex: 1 1 100%;
+      }
+    }
+    @media (max-width: 600px) {
+      header.banner h1 {
+        font-size: 2.4rem;
+      }
+      section h2 {
+        font-size: 1.6rem;
+      }
+    }
+
+    /* Modal Styles for Quiz */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .modal.active {
+      display: flex;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 14px;
+      max-width: 450px;
+      width: 100%;
+      padding: 30px 25px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+      text-align: center;
+      position: relative;
+    }
+    .modal-content h3 {
+      margin-bottom: 15px;
+      color: #0070ff;
+      font-weight: 700;
+    }
+    .modal-content p {
+      margin-bottom: 25px;
+      font-size: 1.1rem;
+    }
+    .modal-content button.close-btn {
+      background: #ff5c5c;
+      margin-top: 10px;
+      padding: 10px 25px;
+      border-radius: 30px;
+      font-weight: 600;
+      box-shadow: 0 4px 10px rgba(255, 92, 92, 0.5);
+      transition: background-color 0.3s ease;
+    }
+    .modal-content button.close-btn:hover {
+      background: #e84444;
+    }
+
+    .pagination-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1em;
+    margin: 2em 0;
+    padding-right: 30px;
+  }
+
+  .nav-btn {
+    background-color: #007BFF;
+    color: white;
+    padding: 0.75em 1.5em;
+    border: none;
+    border-radius: 0.5em;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+  }
+
+  .nav-btn:hover {
+    background-color: #0056b3;
+  }
+  </style>
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <header class="banner">
+    <div class="container">
+      <h1>Phishing Awareness</h1>
+      <p>Protect yourself and your organization from online scams</p>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+        <h2>Quick Navigation</h2>
+        <ul>
+        <li><a href="#what-is-phishing">What is Phishing?</a></li>
+        <li><a href="#types-of-attacks">Types of Attacks</a></li>
+        <li><a href="#real-incidents">Real Incidents</a></li>
+        <li><a href="#spotting">How to Spot</a></li>
+        <li><a href="#anatomy">Email Anatomy</a></li>
+        <li><a href="#best-practices">Best Practices</a></li>
+        <li><a href="#comparison">Email Comparison</a></li>
+        <li><a href="#protection">Protect Yourself</a></li>
+        <li><a href="#response">Incident Response</a></li>
+        <li><a href="#tools">Link Check Tools</a></li>
+        <li><a href="#quiz">Quiz</a></li>
+        </ul>
+    </aside>
+
+    <main class="container">
+        <section id="spotting">
+        <h2>Signs of Phishing Attacks</h2>
+        <p>Details can vary from scam to scam, but some common signs may indicate a message is a phishing attempt:</p>
+        <ul class="checklist">
+            <li data-emoji="⚠️">
+            <strong>Strong Emotions and Pressure Tactics:</strong> Phishing scams try to make victims act quickly by creating urgency or fear. They may threaten jail time, account suspension, or limited-time offers to rush you without thinking.
+            <br>
+            Examples include: 
+            <ul>
+                <li>"There is a problem with your account. Update immediately to avoid losing access."</li>
+                <li>"Illegal activity detected. Pay this fine now or face arrest."</li>
+                <li>"You’ve won a free gift, claim it now."</li>
+                <li>"Invoice overdue. Pay now or service will be shut off."</li>
+                <li>"Exciting investment opportunity with guaranteed returns."</li>
+            </ul>
+            </li>
+            <li data-emoji="💰">
+            <strong>Requests for Money or Sensitive Information:</strong> Unexpected requests for payment or personal data are red flags. Scammers disguise these as overdue bills, fees, or account updates.
+            </li>
+            <li data-emoji="✍️">
+            <strong>Poor Spelling and Grammar:</strong> Many phishing messages contain noticeable errors or awkward phrasing, as scammers often aren’t fluent in the target language.
+            </li>
+            <li data-emoji="📢">
+            <strong>Generic Messaging:</strong> Legitimate companies usually personalize emails with your name or details. Vague messages like "There is an issue with your account" without specifics are suspicious.
+            </li>
+            <li data-emoji="🔗">
+            <strong>Fake URLs and Email Addresses:</strong> Scammers create look-alike addresses that trick you visually. For example, "admin@rnicrosoft.com" uses 'r' and 'n' to mimic 'm'. Or "bankingapp.scamsite.com" appears trustworthy but is a subdomain of a malicious site.
+            <br>They may also use link shorteners to hide true destinations.
+            </li>
+            <li data-emoji="📎">
+            <strong>Unexpected Attachments or Files:</strong> Receiving files you didn't expect, especially executable or unusual formats, can be a way to install malware.
+            </li>
+            <li data-emoji="🔥">
+            <strong>Exploiting Hot-Button Issues:</strong> Scammers sometimes use current events or crises (like political conflicts) to stir emotions and trick victims into reacting impulsively.
+            </li>
+        </ul>
+        </section>
+
+        <section id="anatomy">
+        <h2>Phishing Email Anatomy</h2>
+        <p>Let’s dissect a typical phishing email to understand its tricks. Be aware of these red flags.</p>
+        <img src="phishing_exp1.png" alt="Phishing email example" />
+        <ul class="checklist">
+            <li data-emoji="👀">Impersonated sender name (e.g., “Support Team”)</li>
+            <li data-emoji="🔗">Fake but similar-looking domains (e.g., secure-paypal.com)</li>
+            <li data-emoji="⚠️">Urgent request for credentials or payment</li>
+            <li data-emoji="📎">Suspicious attachments (e.g., .exe, .html)</li>
+        </ul>
+        </section>
+
+        <section id="best-practices">
+        <h2>Best Practices to Avoid Phishing</h2>
+        <ul class="checklist">
+            <li data-emoji="🧠">
+            <strong>Think Before You Click:</strong> Be cautious with unexpected emails, especially those urging urgent action. Don’t click on suspicious links or download unverified attachments.
+            </li>
+            <li data-emoji="🔐">
+            <strong>Use Strong, Unique Passwords:</strong> Avoid reusing passwords across accounts. Use a password manager to help generate and store secure credentials.
+            </li>
+            <li data-emoji="🧩">
+            <strong>Enable Multi-Factor Authentication (MFA):</strong> Require a second factor (e.g., SMS code or authenticator app) to log in, adding a layer of protection beyond passwords.
+            </li>
+            <li data-emoji="🧹">
+            <strong>Keep Software and Antivirus Updated:</strong> Regularly install patches and use reliable antivirus programs to defend against new threats.
+            </li>
+            <li data-emoji="📚">
+            <strong>Attend Cybersecurity Training:</strong> Stay informed about phishing techniques and scams through regular awareness sessions.
+            </li>
+        </ul>
+
+        <h3>🔎 Security Awareness & Company Policies</h3>
+        <p>
+            Since phishing targets people, awareness is key. Organizations should train employees to identify phishing attempts and provide clear reporting procedures. Policies can help reduce risk:
+        </p>
+        <ul class="checklist">
+            <li data-emoji="🏢">Train staff to spot and report phishing attempts easily to IT or security teams.</li>
+            <li data-emoji="📵">Ban sensitive requests like monetary transfers via email without external verification.</li>
+            <li data-emoji="📞">Verify suspicious messages by using alternate contact methods (e.g., call known phone numbers, type URLs manually).</li>
+        </ul>
+
+        <h3>🛡️ Antiphishing Tools & Technologies</h3>
+        <p>
+            Technology can reinforce awareness training and detect phishing attempts before they succeed:
+        </p>
+        <ul class="checklist">
+            <li data-emoji="📬">Use email filters and spam detection to quarantine suspicious messages.</li>
+            <li data-emoji="🛡️">Install antivirus and anti-malware software to detect malicious payloads.</li>
+            <li data-emoji="🔒">Enable MFA across all major systems to prevent account takeovers.</li>
+            <li data-emoji="🌐">Use web filters to block access to known malicious domains.</li>
+            <li data-emoji="🧠">Deploy tools like EDR or SIEM to detect, investigate, and respond to phishing threats using AI and analytics.</li>
+        </ul>
+        </section>
+
+        <section id="comparison">
+        <h2>Phishing vs. Legitimate Emails</h2>
+        <div class="cards">
+            <div class="card">
+            <h3>Phishing Email</h3>
+            <img src="https://via.placeholder.com/350x200?text=Fake+Email" alt="Fake Email" />
+            <p>Misspellings, generic greetings, strange links.</p>
+            </div>
+            <div class="card">
+            <h3>Legitimate Email</h3>
+            <img src="https://via.placeholder.com/350x200?text=Legit+Email" alt="Legit Email" />
+            <p>Personalized, official domain, correct grammar.</p>
+            </div>
+        </div>
+        </section>
+
+        <section id="response">
+        <h2>Incident Response Flow</h2>
+        <p>If you’ve clicked a phishing link, follow this response plan:</p>
+        <img src="https://via.placeholder.com/800x300?text=Incident+Response+Flow" alt="Incident Response Flow">
+        <ul class="checklist">
+            <li>📴 Disconnect from the internet</li>
+            <li>📞 Inform IT security immediately</li>
+            <li>🔑 Change all potentially compromised passwords</li>
+            <li>🛡️ Scan your system for malware</li>
+            <li>📁 Document the incident for auditing</li>
+        </ul>
+        </section>
+
+        <section id="tools">
+        <h2>Check Suspicious Links</h2>
+        <div class="cards">
+            <a class="card tool-card" href="https://transparencyreport.google.com/safe-browsing/search" target="_blank" rel="noopener">Google Safe Browsing</a>
+            <a class="card tool-card" href="https://www.virustotal.com" target="_blank" rel="noopener">VirusTotal</a>
+            <a class="card tool-card" href="https://safeweb.norton.com" target="_blank" rel="noopener">Norton Safe Web</a>
+            <a class="card tool-card" href="https://phishtank.com" target="_blank" rel="noopener">PhishTank</a>
+            <a class="card tool-card" href="https://urlvoid.com" target="_blank" rel="noopener">URLVoid</a>
+        </div>
+    </section>
+    </main>
+    </div>
+    <nav class="pagination-buttons">
+        <a href="phishing.html" class="nav-btn">← Previous</a>
+        <a href="phishing_page3.html" class="nav-btn">Next →</a>
+    </nav>
+
+  <footer>
+    &copy; 2025 Cyber Awareness Training. All rights reserved.
+  </footer>
+</body>
+</html>
