@@ -19,6 +19,7 @@
 
     .layout {
       display: flex;
+      flex-direction: row;
       min-height: 100vh;
     }
     .sidebar {
@@ -57,7 +58,7 @@
     /* Banner header with overlay */
     header.banner {
       position: relative;
-      background: url('images/phishing2.webp') no-repeat center/cover;
+      background: url('images/phishing1.jpg') no-repeat center/cover;
       color: #fff;
       padding: 50px 20px 10px;
       text-align: center;
@@ -120,13 +121,23 @@
     }
 
     /* Card styles */
-    .card, .icon-card {
+    .cards, .icon-card {
       background: #ffffff;
       box-shadow: 0 6px 12px rgb(0 0 0 / 0.1);
       border-radius: 16px;
       padding: 20px;
       flex: 1 1 calc(50% - 20px);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
+      cursor: default;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .card {
+      padding: 20px;
+      flex: 1 1 calc(50% - 20px);
       cursor: default;
       display: flex;
       flex-direction: column;
@@ -225,6 +236,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      min-width: 160px;
     }
     .tool-card:hover {
       background-color: #f5faff;
@@ -247,9 +259,22 @@
       .cards {
         flex-direction: column;
       }
+      .layout {
+        flex-direction: column;
+      }
       .icon-card, .card, .tool-card {
         flex: 1 1 100%;
       }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+
+      .main-content {
+        padding-top: 0;
+      }
+    
     }
     @media (max-width: 600px) {
       header.banner h1 {
@@ -328,6 +353,14 @@
   .nav-btn:hover {
     background-color: #0056b3;
   }
+
+  #tools > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: flex-start;
+}
+
   </style>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
@@ -400,7 +433,7 @@
         <section id="anatomy">
         <h2>Phishing Email Anatomy</h2>
         <p>Let’s dissect a typical phishing email to understand its tricks. Be aware of these red flags.</p>
-        <img src="phishing_exp1.png" alt="Phishing email example" />
+        <img src="images/image3.png" alt="Phishing email example" />
         <ul class="checklist">
             <li data-emoji="👀">Impersonated sender name (e.g., “Support Team”)</li>
             <li data-emoji="🔗">Fake but similar-looking domains (e.g., secure-paypal.com)</li>
@@ -454,24 +487,22 @@
 
         <section id="comparison">
         <h2>Phishing vs. Legitimate Emails</h2>
-        <div class="cards">
             <div class="card">
             <h3>Phishing Email</h3>
-            <img src="https://via.placeholder.com/350x200?text=Fake+Email" alt="Fake Email" />
+            <img src="images/image.png" alt="Fake Email" />
             <p>Misspellings, generic greetings, strange links.</p>
             </div>
             <div class="card">
             <h3>Legitimate Email</h3>
-            <img src="https://via.placeholder.com/350x200?text=Legit+Email" alt="Legit Email" />
+            <img src="images/image2.png" alt="Legit Email" />
             <p>Personalized, official domain, correct grammar.</p>
             </div>
-        </div>
         </section>
 
         <section id="response">
         <h2>Incident Response Flow</h2>
         <p>If you’ve clicked a phishing link, follow this response plan:</p>
-        <img src="https://via.placeholder.com/800x300?text=Incident+Response+Flow" alt="Incident Response Flow">
+        <img src="images/image4.png" alt="Incident Response Flow" style="width: 60%; max-width: 600px;">
         <ul class="checklist">
             <li>📴 Disconnect from the internet</li>
             <li>📞 Inform IT security immediately</li>
@@ -483,7 +514,7 @@
 
         <section id="tools">
         <h2>Check Suspicious Links</h2>
-        <div class="cards">
+        <div>
             <a class="card tool-card" href="https://transparencyreport.google.com/safe-browsing/search" target="_blank" rel="noopener">Google Safe Browsing</a>
             <a class="card tool-card" href="https://www.virustotal.com" target="_blank" rel="noopener">VirusTotal</a>
             <a class="card tool-card" href="https://safeweb.norton.com" target="_blank" rel="noopener">Norton Safe Web</a>
