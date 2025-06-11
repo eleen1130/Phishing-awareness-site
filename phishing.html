@@ -19,6 +19,7 @@
 
     .layout {
       display: flex;
+      flex-direction: row;
       min-height: 100vh;
     }
     .sidebar {
@@ -57,7 +58,7 @@
     /* Banner header with overlay */
     header.banner {
       position: relative;
-      background: url('images/phishing2.webp') no-repeat center/cover;
+      background: url('images/phishing1.jpg') no-repeat center/cover;
       color: #fff;
       padding: 50px 20px 10px;
       text-align: center;
@@ -247,8 +248,20 @@
       .cards {
         flex-direction: column;
       }
+      .layout {
+        flex-direction: column;
+      }
       .icon-card, .card, .tool-card {
         flex: 1 1 100%;
+      }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+
+      .main-content {
+        padding-top: 0;
       }
     }
     @media (max-width: 600px) {
@@ -358,7 +371,7 @@
         </ul>
     </aside>
 
-    <main class="container">
+    <main class="container main-content">
         <section id="what-is-phishing">
         <h2>What is Phishing?</h2>
         <p>Phishing is a type of cyber attack where attackers disguise themselves as trusted individuals or organizations to steal your sensitive information. This can include login credentials, credit card numbers, or even tricking you into downloading malicious software that harms your device or network.</p>
