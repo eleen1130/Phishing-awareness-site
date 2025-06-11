@@ -19,6 +19,7 @@
 
     .layout {
       display: flex;
+      flex-direction: row;
       min-height: 100vh;
     }
     .sidebar {
@@ -57,7 +58,7 @@
     /* Banner header with overlay */
     header.banner {
       position: relative;
-      background: url('images/phishing2.webp') no-repeat center/cover;
+      background: url('images/phishing1.jpg') no-repeat center/cover;
       color: #fff;
       padding: 50px 20px 10px;
       text-align: center;
@@ -247,8 +248,19 @@
       .cards {
         flex-direction: column;
       }
+      .layout {
+        flex-direction: column;
+      }
       .icon-card, .card, .tool-card {
         flex: 1 1 100%;
+      }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+      .main-content {
+        padding-top: 0;
       }
     }
     @media (max-width: 600px) {
@@ -385,16 +397,17 @@
     </aside>
     <main class="container">
         <section id="quiz">
-        <h2>Test Your Awareness</h2>
-        <button id="quizBtn">Take the Quiz</button>
-
-        <div id="quizFrameContainer">
-          <iframe 
-            src="https://docs.google.com/forms/d/e/1FAIpQLSfhxgm9NL6qnWmKQ4FA4AqRZ1Giy6NVFJObeTPlE21ZwNe60g/viewform?embedded=true">
-            Loading…
-          </iframe>
+        <div id="quizSectionHeader">
+            <h2>Test Your Awareness</h2>
+            <button id="quizBtn">Take the Quiz</button>
         </div>
-      </section>
+
+        <div id="quizFrameContainer" style="display: none;">
+            <iframe 
+            src="https://docs.google.com/forms/d/e/1FAIpQLSfhxgm9NL6qnWmKQ4FA4AqRZ1Giy6NVFJObeTPlE21ZwNe60g/viewform?embedded=true" 
+            width="640" height="1480" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+        </div>
+        </section>
     </main>
     </div>
     <nav class="pagination-buttons">
@@ -417,13 +430,15 @@
   <script>
     const quizBtn = document.getElementById('quizBtn');
     const quizFrameContainer = document.getElementById('quizFrameContainer');
-    const hideQuizBtn = document.getElementById('hideQuizBtn');
+    const quizSectionHeader = document.getElementById('quizSectionHeader');
 
     quizBtn.addEventListener('click', () => {
-      quizFrameContainer.style.display = 'block';
-      quizFrameContainer.scrollIntoView({ behavior: 'smooth' });
+        quizSectionHeader.style.display = 'none'; // 隐藏标题和按钮一起
+        quizFrameContainer.style.display = 'block'; // 显示 Google Form
+        quizFrameContainer.scrollIntoView({ behavior: 'smooth' });
     });
   </script>
+
 
 </body>
 </html>
