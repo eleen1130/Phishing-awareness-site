@@ -2,18 +2,26 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Phishing Awareness</title>
   <style>
+    :root {
+        --pccs-red: #E43D30;
+        --pccs-green: #006450;
+        --white: #ffffff;
+        --text-dark: #1a1a1a;
+    }
+
     /* Reset & base */
     *, *::before, *::after {
       box-sizing: border-box;
     }
     body {
       margin: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #f9fbfc;
-      color: #1a1a1a;
+      font-family: 'Poppins', sans-serif;
+      background: var(--white);
+      color: var(--text-dark);
       line-height: 1.6;
     }
 
@@ -24,7 +32,7 @@
     }
     .sidebar {
       width: 260px;
-      background-color: #1f2937;
+      background-color: var(--pccs-green);
       color: #fff;
       padding: 20px;
       position: sticky;
@@ -48,7 +56,7 @@
       transition: color 0.3s ease;
     }
     .sidebar a:hover {
-      color: #fff;
+      color: var(--pccs-white);
     }
     .main-content {
       flex: 1;
@@ -58,7 +66,7 @@
     /* Banner header with overlay */
     header.banner {
       position: relative;
-      background: url('images/phishing1.jpg') no-repeat center/cover;
+      background: url('images/phishing4.webp') no-repeat center/cover;
       color: #fff;
       padding: 50px 20px 10px;
       text-align: center;
@@ -106,9 +114,9 @@
     section h2 {
       font-size: 2rem;
       margin-bottom: 15px;
-      border-bottom: 3px solid #0070ff;
+      border-bottom: 3px solid var(--pccs-red);
       padding-bottom: 6px;
-      color: #0047bb;
+      color: var(--pccs-green);
       font-weight: 700;
     }
 
@@ -190,7 +198,7 @@
     /* Buttons */
     button {
       cursor: pointer;
-      background: #0070ff;
+      background: var(--pccs-red);
       border: none;
       color: white;
       font-size: 1.2rem;
@@ -203,8 +211,8 @@
       margin-top: 10px;
     }
     button:hover {
-      background: #005fcc;
-      box-shadow: 0 8px 22px rgba(0, 95, 204, 0.6);
+      background: #0FB190;
+      box-shadow: 0 8px 22px rgba(48, 228, 111, 0.6);
     }
     button:focus {
       outline: 2px solid #0047bb;
@@ -230,46 +238,6 @@
     .tool-card:hover {
       background-color: #f5faff;
       box-shadow: 0 7px 20px rgba(0, 95, 204, 0.6);
-    }
-
-    /* Footer */
-    footer {
-      background: #e7eaf3;
-      color: #444;
-      text-align: center;
-      padding: 30px 20px;
-      font-size: 0.9rem;
-      font-weight: 500;
-      border-top: 1px solid #d4d9e6;
-    }
-
-    /* Responsive */
-    @media (max-width: 900px) {
-      .cards {
-        flex-direction: column;
-      }
-      .layout {
-        flex-direction: column;
-      }
-      .icon-card, .card, .tool-card {
-        flex: 1 1 100%;
-      }
-      .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-      }
-      .main-content {
-        padding-top: 0;
-      }
-    }
-    @media (max-width: 600px) {
-      header.banner h1 {
-        font-size: 2.4rem;
-      }
-      section h2 {
-        font-size: 1.6rem;
-      }
     }
 
     /* Modal Styles for Quiz */
@@ -327,7 +295,7 @@
   }
 
   .nav-btn {
-    background-color: #007BFF;
+    background-color: var(--pccs-green);
     color: white;
     padding: 0.75em 1.5em;
     border: none;
@@ -338,7 +306,7 @@
   }
 
   .nav-btn:hover {
-    background-color: #0056b3;
+    background-color: #004f3b;
   }
 
   #quizFrameContainer {
@@ -353,19 +321,78 @@
     }
 
     #quizBtn, #hideQuizBtn {
-      padding: 12px 24px;
-      background: #0077cc;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 15px;
+        padding: 12px 24px;
+        background: linear-gradient(135deg, #57C212, #0FB190);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        margin-top: 15px;
+        box-shadow: 0 2px 15px rgba(87, 194, 18, 0.4);
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
     }
 
     #quizBtn:hover, #hideQuizBtn:hover {
-      background: #005fa3;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 20px rgba(15, 177, 144, 0.5);
     }
+
+    .logo-top-right {
+        position: absolute;
+        top: -60px;
+        right: -220px;
+        height: 100px;
+        z-index: 2;
+    }
+    /* Responsive */
+    @media (max-width: 900px) {
+      .cards {
+        flex-direction: column;
+      }
+      .layout {
+        flex-direction: column;
+      }
+      .icon-card, .card, .tool-card {
+        flex: 1 1 100%;
+      }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+      .main-content {
+        padding-top: 0;
+      }
+
+      #quizFrameContainer iframe {
+        width: 100%;
+        max-width: 100%;
+        height: 1480px;
+        border: none;
+    }
+
+      .logo-top-right {
+        position: static;
+        display: block;
+        margin: 0 auto 10px;
+        height: 95px;
+      }
+
+      #quizFrameContainer iframe {
+        width: 1000px;   
+        }
+    }
+    @media (max-width: 600px) {
+      header.banner h1 {
+        font-size: 2.4rem;
+      }
+      section h2 {
+        font-size: 1.6rem;
+      }
+    }
+
   </style>
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
@@ -373,8 +400,9 @@
 
   <header class="banner">
     <div class="container">
-      <h1>Phishing Awareness</h1>
-      <p>Protect yourself and your organization from online scams</p>
+        <img src="images/pccs.png" alt="PCCS Group Logo" class="logo-top-right" />
+        <h1>Phishing Awareness</h1>
+        <p>Protect yourself and your organization from online scams</p>
     </div>
   </header>
 
@@ -405,7 +433,7 @@
         <div id="quizFrameContainer" style="display: none;">
             <iframe 
             src="https://docs.google.com/forms/d/e/1FAIpQLSfhxgm9NL6qnWmKQ4FA4AqRZ1Giy6NVFJObeTPlE21ZwNe60g/viewform?embedded=true" 
-            width="640" height="1480" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+            width="100%" height="1480" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
         </div>
         </section>
     </main>
@@ -413,10 +441,6 @@
     <nav class="pagination-buttons">
         <a href="phishing_page2.html" class="nav-btn">← Previous</a>
     </nav>
-
-  <footer>
-    &copy; 2025 Cyber Awareness Training. All rights reserved.
-  </footer>
 
   <!-- Modal for Quiz -->
   <div class="modal" id="quizModal" role="dialog" aria-modal="true" aria-labelledby="quizTitle">
